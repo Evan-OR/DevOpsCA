@@ -21,7 +21,9 @@ jobs:
       - name: Copy files to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            cd cd /home/ubuntu/DevOpsCA
+            ls
+            cd /home/ubuntu/DevOpsCA
+            ls
             git pull origin main
             npm install
             pm2 reload all
