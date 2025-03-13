@@ -20,8 +20,8 @@ jobs:
 
       - name: Copy files to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
-            cd /home/ec2-user/caFolder/DevOps_CA
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+            cd cd /home/ubuntu/DevOpsCA
             git pull origin main
             npm install
             pm2 reload all
