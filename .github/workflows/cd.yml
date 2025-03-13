@@ -20,11 +20,22 @@ jobs:
 
       - name: Copy files to EC2
         run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/my-app
+
+      - name: Deploy to EC2
+        run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            ls
-            cd /home/ubuntu/DevOpsCA
-            ls
-            git pull origin main
+            set -e  # Exit on error
+            cd /home/ubuntu/my-app
+
+            # Install PM2 if missing
+            if ! command -v pm2 &> /dev/null; then
+              sudo npm install -g pm2
+            fi
+
+            # Install dependencies and restart app
             npm install
-            pm2 reload all
+            pm2 delete my-app || true
+            pm2 start npm --name "my-app" -- run start
+            pm2 save  # Save process list for restarts
           EOF
