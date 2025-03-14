@@ -22,7 +22,7 @@ jobs:
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/my-app
 
-      - name: Deploy to EC2
+      - name: Deploy on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
             set -e  # Exit on error
